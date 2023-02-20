@@ -2,6 +2,9 @@ ROAD_CELL_WIDTH = 2
 WIDE_DISTANCE_WIDTH = 1
 NARROW_DISTANCE_WIDTH = 0
 
+SEEDFILEPATH = "seed.xlsx"
+OUTPUTFILEPATH = "res.xlsx"
+
 class section:
     def __init__(self,row_distance_list,column_distance_list,dataShape,data):
         self.column_distance_list = column_distance_list
@@ -185,8 +188,10 @@ for i in range(0,cellCnt):
     
 dummyToIntMap = createDummyIntMap(warehousebuf)
 dummyToColorMap = dummyToColor(dummyToIntMap)
+
 intToDummyMap = createIntdymmyMap(dummyToIntMap)
 
+import openpyxl 
 from openpyxl import Workbook
 from openpyxl.styles import Border, Side ,PatternFill
 
@@ -194,7 +199,7 @@ BORDER_THICK = 'thick'
 SIDE = Side(border_style=BORDER_THICK,color='000000')
 
 boundDecoder = {"1":Border(left= SIDE,right=SIDE,top=SIDE,),"3":Border(left=SIDE,right=SIDE),"2":Border(left=SIDE,right=SIDE,bottom=SIDE)}
-wb = Workbook()
+wb = openpyxl.load_workbook(SEEDFILEPATH)
 
 
 cnt = 1
@@ -230,6 +235,5 @@ for _warehouse in warehousebuf:
             if border != None:
                 ws.cell(row = rows, column = colu).border = border
             ws.cell(row = rows, column = colu).fill = PatternFill("solid", start_color=(color))
-wb.remove(wb['Sheet'])
-wb.save("res3.xlsx")
+wb.save(OUTPUTFILEPATH)
 
